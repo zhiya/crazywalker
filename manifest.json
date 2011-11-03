@@ -1,11 +1,15 @@
 {
    "background_page": "background.html",
-   "description": "Crazy Walker",
+   "description": "Crazy Walker(Vendar Present)",
    "icons": {
       "128": "cw128.png",
       "16": "cw16.png"
    },
-   "name": "Crazy Walker(Vendar Present)",
-   "permissions": [ "contextMenus", "tabs" ],
-   "version": "1.0"
+   "name": "Crazy Walker",
+   "permissions": [ "tabs", "contextMenus", "notifications" ],
+   "version": "1.0",
+   "omnibox":{"keyword":"walker"},
+    "chrome_url_overrides":{
+    "newtab":"overrides.html"
+    }
 }

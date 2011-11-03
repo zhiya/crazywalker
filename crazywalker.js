@@ -35,19 +35,36 @@ function cwGoogletranslate(info, tab) {if(info&&info.selectionText){window.open(
 function cwBaidu(info, tab) {if(info&&info.selectionText){window.open(getWalkerUrl("baidu",info.selectionText));}}
 function cwGoogle(info, tab) {if(info&&info.selectionText){window.open(getWalkerUrl("google",info.selectionText));}}
 
+function cwGoogleimage(info, tab){
+	if (info){
+		window.open("http://images.google.com.hk/searchbyimage?h1=zh-CN&newwindow=1&safe=strict&biw=1280&bih=273&gdv=2&image_url="+info.srcUrl);
+	}
+}
+
 //右键菜单
 var cwmenu = chrome.contextMenus.create({"title": "Crazy Walker","contexts":["selection"]});
 chrome.contextMenus.create({"title":"百度百科","contexts":["selection"],"onclick":cwBaidubaike,"parentId":cwmenu});
+chrome.contextMenus.create({"contexts":["selection"],"type":"separator","parentId":cwmenu});
 chrome.contextMenus.create({"title":"金山词霸","contexts":["selection"],"onclick":cwJinshanciba,"parentId":cwmenu});
 chrome.contextMenus.create({"title":"谷歌翻译","contexts":["selection"],"onclick":cwGoogletranslate,"parentId":cwmenu});
+chrome.contextMenus.create({"contexts":["selection"],"type":"separator","parentId":cwmenu});
 chrome.contextMenus.create({"title":"百度搜索","contexts":["selection"],"onclick":cwBaidu,"parentId":cwmenu});
 chrome.contextMenus.create({"title":"谷歌搜索","contexts":["selection"],"onclick":cwGoogle,"parentId":cwmenu});
 
-/*
-window.addEventListener("keydown", function(event) {
-	alert("hello!");
-  if (event.keyCode == 80) {
-	  alert("hello!");
-  }
-}, false);
-*/
+chrome.contextMenus.create({"title":"谷歌图片","contexts":["image"],"onclick":cwGoogleimage});
+
+//命令盒子，这里可以添加很多自定义命令处理
+chrome.omnibox.onInputEntered.addListener(function(text){
+	alert("你输入了："+text);
+});
+//chrome.omnibox.onInputCancelled.addListener(function(){});
+
+/*创建新的标签页
+chrome.tabs.onCreated.addListener(function(tab){
+	alert('tabs.onCreated --'
+	+ ' window: ' + tab.windowId
+    + ' tab: '    + tab.id
+    + ' index: '  + tab.index
+    + ' url: '    + tab.url);
+});*/
+
