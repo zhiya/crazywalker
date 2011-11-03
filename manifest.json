@@ -1,0 +1,11 @@
+{
+   "background_page": "background.html",
+   "description": "Crazy Walker",
+   "icons": {
+      "128": "cw128.png",
+      "16": "cw16.png"
+   },
+   "name": "Crazy Walker(Vendar Present)",
+   "permissions": [ "contextMenus" ],
+   "version": "1.0"
+}
