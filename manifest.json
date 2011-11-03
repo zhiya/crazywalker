@@ -6,6 +6,6 @@
       "16": "cw16.png"
    },
    "name": "Crazy Walker(Vendar Present)",
-   "permissions": [ "contextMenus" ],
+   "permissions": [ "contextMenus", "tabs" ],
    "version": "1.0"
 }
