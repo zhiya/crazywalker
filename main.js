@@ -8,18 +8,76 @@ function isEnglish(text){
 	var en=text.length-text.replace(/[a-zA-Z]+/g,'').length;
 	return en>=zh?true:false;
 }
+function isChinese(temp) 
+{ 
+	var re = /[^\u4e00-\u9fa5]/; 
+	if(re.test(temp)) return false; 
+	return true; 
+}
+function isJapanese(temp) 
+{ 
+	var re = /[^\u0800-\u4e00]/; 
+	if(re.test(temp)) return false; 
+	return true; 
+}
+function isKoera(str) {
+	for(i=0; i<str.length; i++) {
+	if(((str.charCodeAt(i) > 0x3130 && str.charCodeAt(i) < 0x318F) || (str.charCodeAt(i) >= 0xAC00 && str.charCodeAt(i) <= 0xD7A3))) {
+		return true;
+		}
+	}
+	return false;
+}
+function isContainKoera(temp)
+{
+	var cnt = 0;
+	for(var i=0;i < temp.length ; i++)
+	{
+		if(isKoera(temp.charAt(i)))
+			cnt++;
+	}
+	if (cnt > 0) return true;
+	return false;
+}
+
+function isContainChinese(temp)
+{
+	var cnt = 0;
+	for(var i=0;i < temp.length ; i++)
+	{
+		if(isChinese(temp.charAt(i)))
+			cnt++;
+	}
+	if (cnt > 5) return true;
+	return false;
+}
+function isContainJapanese(temp)
+{
+	var cnt = 0;
+	for(var i=0;i < temp.length ; i++)
+	{
+		if(isJapanese(temp.charAt(i)))
+			cnt++;
+	}
+	if (cnt > 2) return true;
+	return false;
+}
+
 function getWalkerUrl(type,text){
 	switch(type){
 		case "baidubaike":
 			//百度百科
 			return "http://baike.baidu.com/searchword/?pic=1?sug=1&enc=utf8&word="+text;
+		case "wiki":
+			//维基
+			return "http://zh.wikipedia.org/wiki/"+text;
 		case "jinshanciba":
 			//金山词霸
 			return "http://www.iciba.com/"+text;
 		case "gtranslate":
 			//谷歌翻译
-			if(isEnglish(text))return "http://translate.google.cn/?hl=en#en|zh-CN|"+text;
-			return "http://translate.google.cn/?hl=zh-CN#zh-CN|en|"+text;
+			if(isChinese(text))return "http://translate.google.cn/?ie=utf8&sl=auto&tl=en&text="+text;
+			return "http://translate.google.cn/?ie=utf8&sl=auto&tl=zh-CN&text="+text;
 		case "baidu":
 			//百度搜索
 			return "http://www.baidu.com/s?ie=utf-8&wd="+text;
@@ -35,6 +93,7 @@ function goWalker(type,value){
 }
 
 function cwBaidubaike(info, tab) {if(info&&info.selectionText){goWalker("baidubaike",info.selectionText);}}
+function cwWiki(info, tab) {if(info&&info.selectionText){goWalker("wiki",info.selectionText);}}
 function cwJinshanciba(info, tab) {if(info&&info.selectionText){goWalker("jinshanciba",info.selectionText);}}
 function cwGtranslate(info, tab) {if(info&&info.selectionText){goWalker("gtranslate",info.selectionText);}}
 function cwBaidu(info, tab) {if(info&&info.selectionText){goWalker("baidu",info.selectionText);}}
@@ -49,6 +108,7 @@ function cwGoogleimage(info, tab){
 //右键菜单
 var cwmenu = chrome.contextMenus.create({"title": "Crazy Walker","contexts":["selection"]});
 chrome.contextMenus.create({"title":"百度百科","contexts":["selection"],"onclick":cwBaidubaike,"parentId":cwmenu});
+chrome.contextMenus.create({"title":"维基百科","contexts":["selection"],"onclick":cwWiki,"parentId":cwmenu});
 chrome.contextMenus.create({"contexts":["selection"],"type":"separator","parentId":cwmenu});
 chrome.contextMenus.create({"title":"金山词霸","contexts":["selection"],"onclick":cwJinshanciba,"parentId":cwmenu});
 chrome.contextMenus.create({"title":"谷歌翻译","contexts":["selection"],"onclick":cwGtranslate,"parentId":cwmenu});
@@ -74,8 +134,8 @@ chrome.tabs.onCreated.addListener(function(tab){
 });*/
 
 //处理页面按键请求
-chrome.extension.onRequest.addListener(function onRequest(a, b, c) {
-	if (a.action == "goWalker") {
-		goWalker(a.type,a.text);
+chrome.extension.onRequest.addListener(function onRequest(request, sender, sendResponse) {
+	if (request.action == "goWalker") {
+		if(request.text.length>0)goWalker(request.type,request.text);
     }
 });
