@@ -19,7 +19,7 @@ document.addEventListener('keydown',function(event){
 			case 51:
 				chrome.extension.sendRequest({
 				"action":"goWalker",
-				"type":"jinshanciba",
+				"type":"iciba",
 				"text":window.getSelection().toString()
 				});
 				break;

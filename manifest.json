@@ -7,9 +7,10 @@
    },
    "content_scripts": [ {
       "all_frames": true,
+      "css": [ "themes/crazywalker.css" ], 
       "js": [ "jquery-1.7.min.js", 
-	"scripts/shortcut-keys.js", 
-	"scripts/shortcut-popupmenu.js" ],
+      "scripts/shortcut-keys.js", 
+      "scripts/shortcut-popupmenu.js" ],
       "matches": [ "http://*/*", "https://*/*" ],
       "run_at": "document_start"
    } ],
