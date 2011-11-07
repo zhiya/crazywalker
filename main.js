@@ -335,9 +335,35 @@ chrome.tabs.onCreated.addListener(function(tab){
     + ' url: '    + tab.url);
 });*/
 
+//创建窗口时初始化：会话读取
+
 //处理页面按键请求
 chrome.extension.onRequest.addListener(function onRequest(request, sender, sendResponse) {
 	if (request.action == "goWalker") {
 		if(request.text.length>0)goWalker(request.type,request.text,request.fromurl);
-    }
+    }else if(request.action == "saveSession"){
+		chrome.tabs.getAllInWindow(null,function(tabs){
+			s={};
+			s.name=request.name;
+			s.urls=new Array();
+			s.select=0;//保存当前选择页
+			for ( var i in tabs ){
+				s.urls.push(tabs[i].url);
+				if(tabs[i].selected){
+					s.select=i;
+				}
+			}
+			if(s.urls.length>0){
+				if( addSession(s) ){
+					chrome.extension.sendRequest({
+						"action": "newSession",
+						"name": s.name
+					});
+				}
+			}
+		});
+	}else if(request.action == "getSession"){
+		var sess = getSession(request.name);
+		alert(sess.name);
+	}
 });

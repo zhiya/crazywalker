@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="themes/crazywalker.css" type="text/css" rel="stylesheet" />
+<script src="jquery-1.7.min.js"></script>
+<script src="scripts/sessions.js"></script>
+<script>
+$(document).ready(function(){
+	$('#save_session').click(function(){
+		var name=window.prompt("Session Name","default");
+		if(name.length<=0){
+			return ;
+		}
+		chrome.extension.sendRequest({
+			"action": "saveSession",
+			"name": name
+		});
+	});
+	$('a').click(function(){
+		alert(getSession($('this').attr('id')).name);
+	});
+	chrome.extension.onRequest.addListener(function onRequest(request, sender, sendResponse){
+		if( request.action == "newSession" ){
+			alert(request.name);
+		}
+	});
+});
+
+</script>
+</head>
+<body>
+<ul class='list'>
+</ul>
+<input id="save_session" type="submit" value="±£´æ»á»°" />
+</body>
+</html>

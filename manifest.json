@@ -18,7 +18,9 @@
    "permissions": [ "tabs", "contextMenus", "notifications" ],
    "version": "1.0",
    "omnibox":{"keyword":"walker"},
-    "chrome_url_overrides":{
-    "newtab":"overrides.html"
-    }
+   "browser_action":{
+	"default_icon": "themes/crazywalker-16x16.png",
+	"default_title": "Crazy Walker",
+	"default_popup": "popup.html"
+   }
 }
