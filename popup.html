@@ -6,6 +6,11 @@
 <script src="scripts/sessions.js"></script>
 <script>
 $(document).ready(function(){
+	var sessobjs = getSessions();
+	for ( i in sessobjs )
+	{
+		$('<li><img class="_cw_dropbutton" id="drop_'+sessobjs[i].name+'" /><a href="#" id="'+sessobjs[i].name+'">'+sessobjs[i].name+'</a></li>').appendTo('._cw_list');
+	}
 	$('#save_session').click(function(){
 		var name=window.prompt("Session Name","default");
 		if(name.length<=0){
@@ -14,23 +19,48 @@ $(document).ready(function(){
 		chrome.extension.sendRequest({
 			"action": "saveSession",
 			"name": name
+		},function(response){
+			if( $('#'+response.name).length<=0 ){
+				$('<li><img class="_cw_dropbutton" id=drop_"'+response.name+'" /><a href="#" id="'+response.name+'">'+response.name+'</a></li>').appendTo('._cw_list');
+
+				$('._cw_dropbutton').click(function(){
+					chrome.extension.sendRequest({
+						"action": "removeSession",
+						"name": $(this).attr('id').substr(5)
+					});
+					$(this).closest('li').remove();
+				});
+				$('li a').click(function(){
+					chrome.extension.sendRequest({
+						"action": "retrieveSession",
+						"name": $(this).attr('id')
+					});
+				});
+			}
 		});
 	});
-	$('a').click(function(){
-		alert(getSession($('this').attr('id')).name);
+
+
+	$('._cw_dropbutton').click(function(){
+		chrome.extension.sendRequest({
+			"action": "removeSession",
+			"name": $(this).attr('id').substr(5)
+		});
+		$(this).closest('li').remove();
 	});
-	chrome.extension.onRequest.addListener(function onRequest(request, sender, sendResponse){
-		if( request.action == "newSession" ){
-			alert(request.name);
-		}
+	$('li a').click(function(){
+		chrome.extension.sendRequest({
+			"action": "retrieveSession",
+			"name": $(this).attr('id')
+		});
 	});
 });
 
 </script>
 </head>
 <body>
-<ul class='list'>
+<ul class='_cw_list'>
 </ul>
-<input id="save_session" type="submit" value="±£´æ»á»°" />
+<input id="save_session" type="submit" value="ä¿å­˜ä¼šè¯" />
 </body>
 </html>

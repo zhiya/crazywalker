@@ -353,17 +353,18 @@ chrome.extension.onRequest.addListener(function onRequest(request, sender, sendR
 					s.select=i;
 				}
 			}
-			if(s.urls.length>0){
-				if( addSession(s) ){
-					chrome.extension.sendRequest({
-						"action": "newSession",
-						"name": s.name
-					});
-				}
-			}
+			addSession(s);
 		});
-	}else if(request.action == "getSession"){
+		sendResponse({'name':request.name});
+	}else if(request.action == "retrieveSession"){
 		var sess = getSession(request.name);
-		alert(sess.name);
+		//好的，创建一个新的window，以此创建出所有tabs
+		//最后，选中之前已经选中的那个tab
+		chrome.windows.create({
+			'url': sess.urls,
+			'tabId': sess.selected
+		});
+	}else if(request.action == "removeSession"){
+		removeSession(request.name);
 	}
 });

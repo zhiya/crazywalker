@@ -1,15 +1,26 @@
 
-.list{
-	padding: 0;
-	margin: 0;
+._cw_dropbutton{
+	width: 16px;
+	height: 16px;
+	border: 0;
+	cursor: pointer;
+	padding: 2px;
+	background-repeat:no-repeat;
+	background-image: url('images/drop.png');
 }
 
-.button{
+._cw_list{
+	padding: 0;
+	margin: 0;
+	width: 100px;
+}
+
+._cw_button{
 	float: left;
 	padding: 2px;
 }
 
-.button img{
+._cw_button img{
 	cursor: pointer;
 	width: 16px;
 	height: 16px;

@@ -8,7 +8,7 @@ function addSession(sess){
 			if( sessobjs[idx].name == sess.name ){
 				sessobjs[idx] = sess; //overwrite
 				localStorage.setItem('cwsessions',JSON.stringify(sessobjs));
-				return ;
+				return true;
 			}
 		}
 	}else{
@@ -16,6 +16,7 @@ function addSession(sess){
 	}
 	sessobjs.push(sess);
 	localStorage.setItem('cwsessions',JSON.stringify(sessobjs));
+	return true;
 }
 
 function removeSession(sessname){
@@ -23,13 +24,18 @@ function removeSession(sessname){
 	if( sessobjs == null ){
 		return false;
 	}
-	var idx = 0;
-	for( ;idx<sessobjs.length;++idx ){
-		if( sessobjs[idx].name == sess.name ){
-			sessobjs.del(idx);
-			localStorage.setItem('cwsessions',JSON.stringify(sessobjs));
-			return true;
+	var result = new Array();
+	var find = false;
+	for( var idx=0;idx<sessobjs.length;++idx ){
+		if( sessobjs[idx].name != sessname ){
+			result.push(sessobjs[idx]);
+		}else{
+			find = true;
 		}
+	}
+	if(find){
+		localStorage.setItem('cwsessions',JSON.stringify(result));
+		return true;
 	}
 	return false;
 }
@@ -45,7 +51,7 @@ function getSession(sessname){
 	}
 	var idx = 0;
 	for( ;idx<sessobjs.length;++idx ){
-		if( sessobjs[idx].name == sess.name ){
+		if( sessobjs[idx].name == sessname ){
 			return sessobjs[idx];
 		}
 	}

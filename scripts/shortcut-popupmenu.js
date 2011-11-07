@@ -29,7 +29,7 @@ function Popupitem(id,title,icon){
 	this.alt = title;
 	this.title = title;
 	this.tostring = function(){
-		return '<div class="button"><img id="'+this.id
+		return '<div class="_cw_button"><img id="'+this.id
 		+'" src="'+this.icon+'" alt="'+this.title+'" title="'+this.title+'" /></div>';
 	};
 }
@@ -53,7 +53,7 @@ function build_popupmenu(type){
 	}
 	$('#current_popupmenu').remove();
 	$(menustr+'</div>').appendTo('.popup').attr('id','current_popupmenu');
-	$('.button>img').click(function(){
+	$('._cw_button>img').click(function(){
 		chrome.extension.sendRequest({
 		"action":"goWalker",
 		"type":$(this).attr('id'),
@@ -186,7 +186,7 @@ $(document).ready(function(){
 	$(document).keydown(function(event){
 		if ( popup_visible && event.keyCode >= 49 && event.keyCode <= 57 )
 		{
-			var imgbtns = $('.button>img');
+			var imgbtns = $('._cw_button>img');
 			var idx = event.keyCode - 49;
 			if( imgbtns.length > idx ){
 				imgbtns.eq(idx).click();
