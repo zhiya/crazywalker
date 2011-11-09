@@ -291,7 +291,24 @@ function goWalker(type,value,fromurl){
 	if(typeof fromurl == "undefined"){
 		fromurl = null;
 	}
-	window.open(getWalkerUrl(type,value,fromurl));
+	var url=getWalkerUrl(type,value,fromurl);
+	switch(type){
+		case "iciba":
+		case "gtranslate":
+			chrome.tabs.getAllInWindow(null,function(tabs){
+				for ( var i in tabs )
+				{
+					if( tabs[i].url.indexOf('translate.google.')>0 ||
+						tabs[i].url.indexOf('.iciba.')>0){
+						chrome.tabs.update(tabs[i].id,{"url":url,"selected":true});
+						return ;
+					}
+				}
+				window.open(url);
+			});
+			return ;
+	}
+	window.open(url);
 }
 
 function cwBaidubaike(info, tab) {if(info&&info.selectionText){goWalker("baidubaike",info.selectionText);}}
@@ -339,32 +356,42 @@ chrome.tabs.onCreated.addListener(function(tab){
 
 //处理页面按键请求
 chrome.extension.onRequest.addListener(function onRequest(request, sender, sendResponse) {
-	if (request.action == "goWalker") {
-		if(request.text.length>0)goWalker(request.type,request.text,request.fromurl);
-    }else if(request.action == "saveSession"){
-		chrome.tabs.getAllInWindow(null,function(tabs){
-			s={};
-			s.name=request.name;
-			s.urls=new Array();
-			s.select=0;//保存当前选择页
-			for ( var i in tabs ){
-				s.urls.push(tabs[i].url);
-				if(tabs[i].selected){
-					s.select=i;
+	switch(request.action){
+		case "goWalker":
+			if(request.text.length>0)goWalker(request.type,request.text,request.fromurl);
+			break;
+		case "saveSession":
+			chrome.tabs.getAllInWindow(null,function(tabs){
+				s={};
+				s.name=request.name;
+				s.urls=new Array();
+				s.select=0;//保存当前选择页
+				for ( var i in tabs ){
+					s.urls.push(tabs[i].url);
+					if(tabs[i].selected){
+						s.select=tabs[i].url;
+					}
 				}
-			}
-			addSession(s);
-		});
-		sendResponse({'name':request.name});
-	}else if(request.action == "retrieveSession"){
-		var sess = getSession(request.name);
-		//好的，创建一个新的window，以此创建出所有tabs
-		//最后，选中之前已经选中的那个tab
-		chrome.windows.create({
-			'url': sess.urls,
-			'tabId': sess.selected
-		});
-	}else if(request.action == "removeSession"){
-		removeSession(request.name);
+				addSession(s);
+			});
+			sendResponse({'name':request.name});
+			break;
+		case "retrieveSession":
+			var sess = getSession(request.name);
+			//好的，创建一个新的window，以此创建出所有tabs
+			//最后，选中之前已经选中的那个tab
+			chrome.windows.create({'url': sess.urls});
+			chrome.tabs.getAllInWindow(null,function(tabs){
+				for ( var i in tabs ){
+					if(tabs[i].url == sess.select){
+						chrome.tabs.update(tabs[i].id,{"selected":true});
+						break;
+					}
+				}
+			});
+			break;
+		case "removeSession":
+			removeSession(request.name);
+			break;
 	}
 });
