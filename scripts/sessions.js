@@ -35,9 +35,8 @@ function removeSession(sessname){
 	}
 	if(find){
 		localStorage.setItem('cwsessions',JSON.stringify(result));
-		return true;
 	}
-	return false;
+	return true;
 }
 
 function clearSessions(){
