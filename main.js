@@ -311,13 +311,6 @@ function goWalker(type,value,fromurl){
 	window.open(url);
 }
 
-function cwBaidubaike(info, tab) {if(info&&info.selectionText){goWalker("baidubaike",info.selectionText);}}
-function cwWiki(info, tab) {if(info&&info.selectionText){goWalker("wiki",info.selectionText);}}
-function cwiciba(info, tab) {if(info&&info.selectionText){goWalker("iciba",info.selectionText);}}
-function cwGtranslate(info, tab) {if(info&&info.selectionText){goWalker("gtranslate",info.selectionText);}}
-function cwBaidu(info, tab) {if(info&&info.selectionText){goWalker("baidu",info.selectionText);}}
-function cwGoogle(info, tab) {if(info&&info.selectionText){goWalker("google",info.selectionText);}}
-
 function cwGoogleimage(info, tab){
 	if (info){
 		window.open("http://images.google.com.hk/searchbyimage?h1=zh-CN&newwindow=1&safe=strict&biw=1280&bih=273&gdv=2&image_url="+info.srcUrl);
@@ -325,7 +318,20 @@ function cwGoogleimage(info, tab){
 }
 
 //右键菜单
-var cwmenu = chrome.contextMenus.create({"title": "Crazy Walker","contexts":["selection"]});
+var cwmenu_root = chrome.contextMenus.create({"title": "Crazy Walker","contexts":["selection"]});
+
+//////////////////////////////
+//知识：百科、翻译、搜索
+//////////////////////////////
+function cwBaidubaike(info, tab) {if(info&&info.selectionText){goWalker("baidubaike",info.selectionText);}}
+function cwWiki(info, tab) {if(info&&info.selectionText){goWalker("wiki",info.selectionText);}}
+function cwiciba(info, tab) {if(info&&info.selectionText){goWalker("iciba",info.selectionText);}}
+function cwGtranslate(info, tab) {if(info&&info.selectionText){goWalker("gtranslate",info.selectionText);}}
+function cwBaidu(info, tab) {if(info&&info.selectionText){goWalker("baidu",info.selectionText);}}
+function cwGoogle(info, tab) {if(info&&info.selectionText){goWalker("google",info.selectionText);}}
+
+cwmenu = chrome.contextMenus.create({"title": "知识","contexts":["selection"],"parentId":cwmenu_root});
+
 chrome.contextMenus.create({"title":"百度百科","contexts":["selection"],"onclick":cwBaidubaike,"parentId":cwmenu});
 chrome.contextMenus.create({"title":"维基百科","contexts":["selection"],"onclick":cwWiki,"parentId":cwmenu});
 chrome.contextMenus.create({"contexts":["selection"],"type":"separator","parentId":cwmenu});
@@ -334,6 +340,34 @@ chrome.contextMenus.create({"title":"谷歌翻译","contexts":["selection"],"onc
 chrome.contextMenus.create({"contexts":["selection"],"type":"separator","parentId":cwmenu});
 chrome.contextMenus.create({"title":"百度搜索","contexts":["selection"],"onclick":cwBaidu,"parentId":cwmenu});
 chrome.contextMenus.create({"title":"谷歌搜索","contexts":["selection"],"onclick":cwGoogle,"parentId":cwmenu});
+
+//////////////////////////////
+//社区：SNS、微博
+//////////////////////////////
+function cwSinaweibo(info, tab) {if(info&&info.selectionText){goWalker("sinaweibo",info.selectionText);}}
+function cwTencentweibo(info, tab) {if(info&&info.selectionText){goWalker("tencentweibo",info.selectionText);}}
+function cwRenren(info, tab) {if(info&&info.selectionText){goWalker("renren",info.selectionText);}}
+function cwKaixin(info, tab) {if(info&&info.selectionText){goWalker("kaixin",info.selectionText);}}
+function cwDouban(info, tab) {if(info&&info.selectionText){goWalker("douban",info.selectionText);}}
+
+cwmenu = chrome.contextMenus.create({"title": "社区","contexts":["selection"],"parentId":cwmenu_root});
+
+chrome.contextMenus.create({"title":"新浪微博","contexts":["selection"],"onclick":cwSinaweibo,"parentId":cwmenu});
+chrome.contextMenus.create({"title":"腾讯微博","contexts":["selection"],"onclick":cwTencentweibo,"parentId":cwmenu});
+chrome.contextMenus.create({"title":"人人网","contexts":["selection"],"onclick":cwRenren,"parentId":cwmenu});
+chrome.contextMenus.create({"title":"开心网","contexts":["selection"],"onclick":cwKaixin,"parentId":cwmenu});
+chrome.contextMenus.create({"title":"豆瓣社区","contexts":["selection"],"onclick":cwDouban,"parentId":cwmenu});
+
+////////////////////////////////////
+//娱乐：新闻、图片、歌曲、视频
+////////////////////////////////////
+
+
+
+//////////////////////////////////////////
+//购物：易淘、京东、1号店、易讯、当当
+//////////////////////////////////////////
+
 
 chrome.contextMenus.create({"title":"谷歌图片","contexts":["image"],"onclick":cwGoogleimage});
 

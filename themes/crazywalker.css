@@ -16,10 +16,10 @@
 	width: 150px;
 }
 
-._cw_list a:link   {font-family:Verdana, Arial,"宋体";font-size:14px;color: #00238C;text-decoration: none}
-._cw_list a:visited{font-family:Verdana, Arial,"宋体";font-size:14px;color: #0033CC;text-decoration: none}
-._cw_list a:hover  {font-family:Verdana, Arial,"宋体";font-size:13px;color: #CC3366;text-decoration: none}
-._cw_list a:active {font-family:Verdana, Arial,"宋体";font-size:14px;color: #0033CC;text-decoration: none}
+._cw_list a:link   {font-size:13px;color: #00238C;text-decoration: none}
+._cw_list a:visited{font-size:13px;color: #0033CC;text-decoration: none}
+._cw_list a:hover  {font-size:15px;color: #CC3366;text-decoration: none}
+._cw_list a:active {font-size:13px;color: #0033CC;text-decoration: none}
 
 ._cw_list li{
 	padding: 3px;
