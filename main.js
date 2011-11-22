@@ -380,6 +380,9 @@ chrome.extension.onRequest.addListener(function onRequest(request, sender, sendR
 			var sess = getSession(request.name);
 			//好的，创建一个新的window，以此创建出所有tabs
 			//最后，选中之前已经选中的那个tab
+			if( !sess || !sess.urls ){
+				break;
+			}
 			chrome.windows.create({'url': sess.urls});
 			chrome.tabs.getAllInWindow(null,function(tabs){
 				for ( var i in tabs ){
@@ -391,7 +394,7 @@ chrome.extension.onRequest.addListener(function onRequest(request, sender, sendR
 			});
 			break;
 		case "removeSession":
-			removeSession(request.name);
+			sendResponse({'result':removeSession(request.name)});
 			break;
 	}
 });

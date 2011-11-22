@@ -1,27 +1,76 @@
 
+/*下拉菜单的删除按钮*/
 ._cw_dropbutton{
+	display: block;
+	float: left;
 	width: 16px;
 	height: 16px;
-	border: 0;
-	cursor: pointer;
-	padding: 2px;
-	background-repeat:no-repeat;
-	background-image: url('images/drop.png');
+	margin: 0 auto;
+	background: transparent url('images/drop.png') no-repeat center;
 }
 
 ._cw_list{
-	padding: 0;
+	padding: 5px;
 	margin: 0;
-	width: 100px;
+	list-style-type: none;
+	width: 150px;
 }
 
+._cw_list a:link   {font-family:Verdana, Arial,"宋体";font-size:14px;color: #00238C;text-decoration: none}
+._cw_list a:visited{font-family:Verdana, Arial,"宋体";font-size:14px;color: #0033CC;text-decoration: none}
+._cw_list a:hover  {font-family:Verdana, Arial,"宋体";font-size:13px;color: #CC3366;text-decoration: none}
+._cw_list a:active {font-family:Verdana, Arial,"宋体";font-size:14px;color: #0033CC;text-decoration: none}
+
+._cw_list li{
+	padding: 3px;
+	overflow: hidden;
+}
+
+/*弹出菜单*/
+.popup{
+	padding: 2px;
+	margin: 0;
+}
+
+/*弹出菜单上的按钮控件*/
 ._cw_button{
 	float: left;
-	padding: 2px;
+	padding: 4px;
+	display: inline;
 }
 
 ._cw_button img{
 	cursor: pointer;
 	width: 16px;
 	height: 16px;
+	padding: 4px;
 }
+
+a.button {
+    background: transparent url('images/bg_button_a.gif') no-repeat scroll top right;
+    color: #444;
+    display: block;
+    float: left;
+    height: 24px;
+    margin-right: 6px;
+    padding-right: 18px; /* sliding doors padding */
+    text-decoration: none;
+}
+
+a.button span {
+    background: transparent url('images/bg_button_span.gif') no-repeat;
+    display: block;
+    line-height: 14px;
+    padding: 5px 0 5px 18px;
+} 
+
+a.button:active {
+    background-position: bottom right;
+    color: #000;
+    outline: none; /* hide dotted outline in Firefox */
+}
+
+a.button:active span {
+    background-position: bottom left;
+    padding: 6px 0 4px 18px; /* push text down 1px */
+} 
