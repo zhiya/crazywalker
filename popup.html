@@ -44,11 +44,8 @@ $(document).ready(function(){
 		chrome.extension.sendRequest({
 			"action": "removeSession",
 			"name": $(this).attr('id').substr(5)
-		},function(res){
-			if(res.result){
-				$(this).closest('li').remove();
-			}
 		});
+		$(this).closest('li').remove();
 	});
 	$('li a').click(function(){
 		chrome.extension.sendRequest({

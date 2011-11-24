@@ -398,13 +398,13 @@ chrome.extension.onRequest.addListener(function onRequest(request, sender, sendR
 			chrome.tabs.getAllInWindow(null,function(tabs){
 				s={};
 				s.name=request.name;
-				s.urls=new Array();
-				s.select=0;//保存当前选择页
+				s.tabs=new Array();
 				for ( var i in tabs ){
-					s.urls.push(tabs[i].url);
-					if(tabs[i].selected){
-						s.select=tabs[i].url;
-					}
+					s.tabs.push({
+						'url':tabs[i].url,
+						'selected':tabs[i].selected,
+						'pinned':tabs[i].pinned
+					});
 				}
 				addSession(s);
 			});
@@ -414,21 +414,42 @@ chrome.extension.onRequest.addListener(function onRequest(request, sender, sendR
 			var sess = getSession(request.name);
 			//好的，创建一个新的window，以此创建出所有tabs
 			//最后，选中之前已经选中的那个tab
-			if( !sess || !sess.urls ){
+			if( !sess || !sess.tabs ){
 				break;
 			}
-			chrome.windows.create({'url': sess.urls});
+			var urls=new Array();
+			for ( var i in sess.tabs )
+			{
+				urls.push(sess.tabs[i].url);
+			}
+			chrome.windows.create({'url': urls});
 			chrome.tabs.getAllInWindow(null,function(tabs){
 				for ( var i in tabs ){
-					if(tabs[i].url == sess.select){
-						chrome.tabs.update(tabs[i].id,{"selected":true});
-						break;
-					}
+					chrome.tabs.update(tabs[i].id,{
+						'url':sess.tabs[i].url,
+						'selected':sess.tabs[i].selected,
+						'pinned':sess.tabs[i].pinned
+					});
 				}
 			});
 			break;
 		case "removeSession":
 			sendResponse({'result':removeSession(request.name)});
+			break;
+		case "pinTab":
+			chrome.tabs.getSelected(null,function(tab){
+				chrome.tabs.update(tab.id,{'pinned':!tab.pinned});
+			});
+			break;
+		case "pinAllTabs":
+			chrome.tabs.getSelected(null,function(tab){
+				chrome.tabs.getAllInWindow(null,function(tabs){
+					for ( var i in tabs )
+					{
+						chrome.tabs.update(tabs[i].id,{'pinned':!tab.pinned});
+					}
+				});
+			});
 			break;
 	}
 });
